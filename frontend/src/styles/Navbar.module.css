@@ -1,0 +1,58 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px 20px;
+  }
+  
+  .navList {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  
+  .navList li {
+    margin: 0 10px;
+  }
+  
+  .navList li a,
+  .navLink {
+    text-decoration: none;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .navList li a:hover,
+  .navLink:hover {
+    background-color: #575757;
+  }
+  
+  .active {
+    background-color: #ff5722;
+    color: #fff;
+  }
+  
+  .logout {
+    margin-left: auto; /* Empuja el botón de logout hacia el extremo derecho */
+  }
+  
+  .logoutButton {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .logoutButton:hover {
+    background-color: #575757;
+  }
+      

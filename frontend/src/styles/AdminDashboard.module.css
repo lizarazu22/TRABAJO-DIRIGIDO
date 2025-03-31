@@ -1,0 +1,20 @@
+.adminContainer {
+  text-align: center;
+  padding: 20px;
+}
+
+.inputField {
+  margin: 10px;
+}
+
+.uploadButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.uploadButton:hover {
+  background-color: #218838;
+}
