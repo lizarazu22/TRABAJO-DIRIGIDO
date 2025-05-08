@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import styles from '../../styles/AdminDashboard.module.css';
+import withAuth from '../../middlewares/withAuth';
+import AdminNavbar from '../../components/AdminNavbar';
 
 const AdminDashboard = () => {
   const [file, setFile] = useState(null);
@@ -21,7 +23,7 @@ const AdminDashboard = () => {
 
     try {
       const response = await axios.post('http://localhost:5000/api/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
       setMessage(response.data.message);
     } catch (error) {
@@ -31,7 +33,8 @@ const AdminDashboard = () => {
 
   return (
     <div className={styles.adminContainer}>
-      <h1>Panel de Administrador</h1>
+      <AdminNavbar />
+      <h1>Panel de Administración</h1>
       <input type="file" className={styles.inputField} onChange={handleFileChange} />
       <button className={styles.uploadButton} onClick={handleUpload}>
         Subir Archivo
@@ -41,4 +44,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default withAuth(AdminDashboard, ['admin']);

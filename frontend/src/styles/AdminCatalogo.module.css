@@ -1,0 +1,25 @@
+.adminCatalogoContainer {
+    padding: 20px;
+  }
+  
+  .productForm {
+    margin-top: 20px;
+  }
+  
+  .productForm input {
+    margin-right: 10px;
+  }
+  
+  .productList {
+    margin-top: 30px;
+  }
+  
+  .productItem {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .productItem button {
+    margin-left: 10px;
+  }
+  

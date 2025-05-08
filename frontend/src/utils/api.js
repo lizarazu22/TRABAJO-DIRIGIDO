@@ -1,20 +1,20 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api', // URL del backend
+  baseURL: 'http://localhost:5000/api',
 });
 
-// Interceptor para manejar el token
 API.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token'); // Obtenemos el token del localStorage
+  const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
+// Cargar desde la colección formal
 export const fetchProducts = async () => {
-  const { data } = await API.get('/productos');
+  const { data } = await API.get('/admin/productos');
   return data;
 };
 

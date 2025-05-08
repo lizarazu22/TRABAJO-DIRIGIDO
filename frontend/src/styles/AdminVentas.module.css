@@ -1,0 +1,21 @@
+.adminVentasContainer {
+    padding: 20px;
+  }
+  
+  .dateInputs {
+    margin: 20px 0;
+  }
+  
+  .dateInputs input {
+    margin-right: 10px;
+  }
+  
+  .salesList {
+    margin-top: 20px;
+  }
+  
+  .saleItem {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  

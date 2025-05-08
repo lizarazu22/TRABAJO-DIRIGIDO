@@ -1,0 +1,17 @@
+.adminUsuariosContainer {
+    padding: 20px;
+  }
+  
+  .userList {
+    margin-top: 20px;
+  }
+  
+  .userItem {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .userItem h3 {
+    margin: 0;
+  }
+  

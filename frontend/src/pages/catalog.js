@@ -1,71 +1,79 @@
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import styles from '../styles/Catalog.module.css';
+import { agregarAlCarrito } from '../utils/carritoApi';
+import { fetchProducts } from '../utils/api';
 
 const Catalog = () => {
+  const [productos, setProductos] = useState([]);
   const [quantities, setQuantities] = useState({});
-  
-  const products = [
-    { id: 1, name: 'Hummingbird Printed T-Shirt', price: 19.12, oldPrice: 30.04, discount: 20, image: '/images/tshirt1.jpg' },
-    { id: 2, name: 'Hummingbird Printed Sweater', price: 28.72, oldPrice: 36.90, discount: 20, image: '/images/sweater.jpg' },
-    { id: 3, name: 'The Best Is Yet To Come Poster', price: 20.00, image: '/images/poster1.jpg' },
-    { id: 4, name: 'The Adventure Begins Poster', price: 20.00, image: '/images/poster2.jpg' },
-    { id: 5, name: 'Today Is A Good Day Poster', price: 29.00, image: '/images/poster3.jpg' },
-    { id: 6, name: 'Mug The Best Is Yet To Come', price: 11.90, image: '/images/mug1.jpg' },
-    { id: 7, name: 'Mug The Adventure Begins', price: 11.90, image: '/images/mug2.jpg' },
-    { id: 8, name: 'Mug Today Is A Good Day', price: 11.90, image: '/images/mug3.jpg' },
-  ];
-  const handleQuantityChange = (productId, value) => {
-    setQuantities({ ...quantities, [productId]: parseInt(value) || 1 });
-  };
+  const router = useRouter();
 
-  const addToCart = (product) => {
-    const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    const quantity = quantities[product.id] || 1;
-
-    const existingProductIndex = savedCart.findIndex((item) => item.id === product.id);
-    if (existingProductIndex !== -1) {
-      savedCart[existingProductIndex].quantity += quantity;
-    } else {
-      savedCart.push({ ...product, quantity });
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || !user._id) {
+      router.push('/login');
+      return;
     }
 
-    localStorage.setItem('cart', JSON.stringify(savedCart));
-    alert(`${product.name} agregado al carrito (${quantity} unidades).`);
+    const obtenerProductos = async () => {
+      try {
+        const data = await fetchProducts();
+        setProductos(data);
+      } catch (err) {
+        console.error('Error al obtener catálogo:', err);
+      }
+    };
+
+    obtenerProductos();
+  }, []);
+
+  const handleQuantityChange = (productoId, value) => {
+    setQuantities({ ...quantities, [productoId]: parseInt(value) || 1 });
+  };
+
+  const addToCart = async (product) => {
+    const usuario = JSON.parse(localStorage.getItem('user'));
+    if (!usuario || !usuario._id) {
+      alert('Debes iniciar sesión para agregar productos.');
+      return;
+    }
+
+    const cantidad = quantities[product._id] || 1;
+    const productoParaApi = {
+      productoId: product._id,
+      nombre: product.nombre,
+      precio: product.precio,
+      cantidad,
+    };
+
+    try {
+      const res = await agregarAlCarrito(usuario._id, productoParaApi);
+      alert(`${product.nombre} agregado al carrito (${cantidad} unidades).`);
+    } catch (err) {
+      console.error('Error agregando producto:', err);
+    }
   };
 
   return (
     <div className={styles.catalogContainer}>
-      <h1 className={styles.heading}>Productos Destacados</h1>
-      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <Link href="/cart" passHref>
-          <button style={{ marginRight: '10px' }}>Ir al Carrito</button>
-        </Link>
-        <Link href="/" passHref>
-          <button>Volver al Inicio</button>
-        </Link>
-      </div>
+      <h1 className={styles.heading}>Catálogo de Productos</h1>
       <div className={styles.productGrid}>
-        {products.map((product) => (
-          <div key={product.id} className={styles.productCard}>
-            <img src={product.image} alt={product.name} className={styles.productImage} />
-            <h2>{product.name}</h2>
-            <p className={styles.price}>{product.price.toFixed(2)} €</p>
+        {productos.map((product) => (
+          <div key={product._id} className={styles.productCard}>
+            <h2>{product.nombre}</h2>
+            <p>Precio: {product.precio.toFixed(2)} Bs</p>
+            <p>Stock: {product.stock}</p>
             <div>
-              <label htmlFor={`quantity-${product.id}`}>Cantidad: </label>
+              <label>Cantidad:</label>
               <input
                 type="number"
-                id={`quantity-${product.id}`}
                 min="1"
-                value={quantities[product.id] || 1}
-                onChange={(e) => handleQuantityChange(product.id, e.target.value)}
-                style={{ width: '50px' }}
+                value={quantities[product._id] || 1}
+                onChange={(e) => handleQuantityChange(product._id, e.target.value)}
               />
             </div>
-            <button
-              className={styles.addToCartButton}
-              onClick={() => addToCart(product)}
-            >
+            <button onClick={() => addToCart(product)}>
               Agregar al carrito
             </button>
           </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import styles from '../styles/Login.module.css';
 
 const Login = () => {
@@ -17,27 +18,29 @@ const Login = () => {
     try {
       const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
 
-      if (!response.ok) {
-        throw new Error('Credenciales incorrectas. Intenta nuevamente.');
-      }
+      if (!response.ok) throw new Error('Credenciales incorrectas.');
 
       const data = await response.json();
-      
-      // Guardar el token y la información del usuario
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Redirigir según el rol del usuario
+      localStorage.setItem('token', data.token);
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          _id: data.user._id,
+          nombre: data.user.nombre,
+          email: data.user.email,
+          rol: data.user.rol,
+        })
+      );
+
       if (data.user.rol === 'admin') {
-        router.push('/admin/AdminDashboard'); // Redirigir al panel de administrador
+        router.push('/admin/AdminDashboard');
       } else {
-        router.push('/'); // Redirigir a la página de inicio
+        router.push('/');
       }
     } catch (err) {
       setError(err.message);
@@ -72,7 +75,9 @@ const Login = () => {
           <label>
             <input type="checkbox" /> Remember me
           </label>
-          <a href="#">Forgot password?</a>
+          <Link href={`/forgot-password?email=${encodeURIComponent(form.email)}`}>
+            <span className={styles.forgotLink}>Forgot password?</span>
+          </Link>
         </div>
         {error && <p className={styles.error}>{error}</p>}
         <button type="submit" className={styles.loginButton}>
