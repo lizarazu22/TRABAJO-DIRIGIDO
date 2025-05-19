@@ -1,31 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const Venta = require('../models/venta');
+const ventaController = require('../controllers/ventaController');
 
-// Obtener ventas por usuario
-router.get('/por-usuario/:usuarioId', async (req, res) => {
-  try {
-    const ventas = await Venta.find({ usuarioId: req.params.usuarioId });
-    res.json(ventas);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener ventas', error });
-  }
-});
-
-// Obtener ventas por rango de fechas
-router.get('/por-fechas', async (req, res) => {
-  const { desde, hasta } = req.query;
-  try {
-    const ventas = await Venta.find({
-      fecha: {
-        $gte: new Date(desde),
-        $lte: new Date(hasta)
-      }
-    });
-    res.json(ventas);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener ventas por fechas', error });
-  }
-});
+router.post('/', ventaController.crearVenta);
+router.get('/por-usuario/:usuarioId', ventaController.obtenerVentasPorUsuario);
+router.get('/por-fechas', ventaController.obtenerVentasPorFechas);
+router.get('/filtrar', ventaController.obtenerVentasPorUsuarioYFechas);
+router.get('/cierre-caja', ventaController.obtenerCierreCaja);
+router.get('/resumen-mensual', ventaController.resumenMensual);
+router.get('/recalcular-totales', ventaController.recalcularTotales);
+router.get('/top-comprador', ventaController.topComprador);
+router.get('/top-compradores', ventaController.topCompradores); 
+router.get('/', ventaController.obtenerTodasLasVentas);
 
 module.exports = router;

@@ -19,6 +19,8 @@ const AdminNavbar = () => {
         <li><Link href="/admin/Ventas">Ventas</Link></li>
         <li><Link href="/admin/Productos">Productos</Link></li>
         <li><Link href="/admin/ExcelUpload">Subir Excel</Link></li>
+        <li><Link href="/admin/CierreCaja">Cierre de Caja</Link></li>
+        <li><Link href="/admin/Gastos">Gastos</Link></li> {/* 📌 nuevo enlace */}
       </ul>
       <button onClick={handleLogout} className={styles.logoutButton}>Cerrar Sesión</button>
     </nav>

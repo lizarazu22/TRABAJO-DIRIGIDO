@@ -51,37 +51,65 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
-// Migrar productos desde AlmacenTemp a Productos
+// Migrar productos desde AlmacenTemp a Productos consolidando stock
 exports.migrarDesdeAlmacenTemp = async (req, res) => {
   try {
+    await Producto.deleteMany({});
+
     const registros = await AlmacenTemp.find();
-    const nuevosProductos = [];
+    console.log('Contenido de AlmacenTemp:', registros);
+
+    const productosMap = new Map();
 
     registros.forEach(registro => {
       registro.data.forEach(item => {
-        if (item['__EMPTY_5'] && item['__EMPTY_9']) {
-          nuevosProductos.push({
-            nombre: item['__EMPTY_5'],
+        const rawNombre = item['__EMPTY_5'];
+        if (!rawNombre) return;
+
+        const rawPrecio = item['__EMPTY_9'];
+        let precio = 0;
+
+        if (rawPrecio) {
+          precio = parseFloat(rawPrecio.toString().replace(/[^\d,.-]/g, '').replace(',', '.'));
+          if (isNaN(precio)) precio = 0;
+        }
+
+        const stock = parseFloat(item['__EMPTY_8']) || 0;
+
+        const nombreKey = rawNombre
+          .trim()
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/\s+/g, ' ')
+          .replace(/[^\w\s.-]/g, '');
+
+        if (productosMap.has(nombreKey)) {
+          productosMap.get(nombreKey).stock += stock;
+        } else {
+          productosMap.set(nombreKey, {
+            nombre: rawNombre.trim(),
             descripcion: 'Cargado desde Excel',
-            precio: parseFloat(
-              typeof item['__EMPTY_9'] === 'string'
-                ? item['__EMPTY_9'].toString().replace(/[^\d.-]/g, '')
-                : item['__EMPTY_9']
-            ) || 0,
+            precio,
             categoria: 'General',
-            stock: parseFloat(item['__EMPTY_8']) || 0,
-            imagenes: [],
+            stock,
+            imagenes: []
           });
         }
       });
     });
 
-    if (nuevosProductos.length === 0) {
+    const productosFinales = Array.from(productosMap.values());
+
+    if (productosFinales.length === 0) {
       return res.status(400).json({ message: 'No se encontraron productos válidos para migrar' });
     }
 
-    await Producto.insertMany(nuevosProductos);
-    res.status(200).json({ message: 'Productos migrados correctamente', cantidad: nuevosProductos.length });
+    await Producto.insertMany(productosFinales);
+    await AlmacenTemp.deleteMany({});
+
+    res.status(200).json({ message: 'Productos migrados correctamente', cantidad: productosFinales.length });
+
   } catch (error) {
     console.error('Error migrando productos:', error);
     res.status(500).json({ message: 'Error al migrar productos', error });

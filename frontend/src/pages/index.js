@@ -27,7 +27,7 @@ const Home = () => {
 
       <div className={styles.section}>
         <h2>Valores</h2>
-        <ul>
+        <ul className={styles.list}>
           <li>Ética</li>
           <li>Honestidad</li>
           <li>Respeto</li>
@@ -59,9 +59,17 @@ const Home = () => {
 
       <div className={styles.section}>
         <h2>Contacto</h2>
-        <p>📞 (591) 772 45533 | (591) 285 2122 | (591) 246 3580</p>
-        <p>📧 info@textilescopacabana.com / fibrasbolivianas@gmail.com</p>
-        <p>📍 Calle Illampu Nro. 853 casi esquina Sagárnaga, La Paz - Bolivia</p>
+        <p>
+          📞 (591) 772 45533 | (591) 285 2122 | (591) 246 3580
+        </p>
+        <p>
+          📧 <a href="mailto:info@textilescopacabana.com">info@textilescopacabana.com</a> / <a href="mailto:fibrasbolivianas@gmail.com">fibrasbolivianas@gmail.com</a>
+        </p>
+        <p>
+          📍 <a href="https://www.google.com/maps/place/Calle+Illampu+853,+La+Paz,+Bolivia" target="_blank" rel="noopener noreferrer">
+            Calle Illampu Nro. 853 casi esquina Sagárnaga, La Paz - Bolivia
+          </a>
+        </p>
       </div>
     </div>
   );

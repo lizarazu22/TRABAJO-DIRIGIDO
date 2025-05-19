@@ -1,0 +1,87 @@
+.container {
+    padding: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  
+  .heading {
+    font-size: 30px;
+    margin-bottom: 25px;
+    color: #333;
+    text-align: center;
+  }
+  
+  .filterGroup {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 25px;
+    justify-content: center;
+  }
+  
+  .filterGroup label {
+    font-weight: 600;
+  }
+  
+  .filterGroup input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .filterGroup button {
+    background: #0077cc;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .filterGroup button:hover {
+    background: #005fa3;
+  }
+  
+  .results {
+    margin-top: 25px;
+  }
+  
+  .results h3 {
+    color: #444;
+    margin-top: 15px;
+  }
+  
+  .results ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .results li {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .results li:nth-child(even) {
+    background: #f9f9f9;
+  }
+  
+  .totalBox {
+    background: #f7f7f7;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 6px;
+    text-align: center;
+  }
+  
+  .totalBox h2 {
+    margin: 10px 0;
+  }
+  
+  .graphContainer {
+    margin-top: 40px;
+  }
+  

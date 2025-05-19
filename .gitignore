@@ -1,54 +1,83 @@
-# Node.js dependencies
-node_modules/
-frontend/node_modules/
-backend/node_modules/
+.hero {
+  background-image: url('/disenos/fondoInicio.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+}
 
-# Next.js build output
-.next/
-out/
-.cache/
+.hero h1 {
+  color: #fff;
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-backend/.env
+.hero p {
+  color: #eee;
+  font-size: 1.3rem;
+  max-width: 800px;
+}
 
-# Logs
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+.section {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #fff;
+}
 
-# OS-specific files
-.DS_Store
-Thumbs.db
+.section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+}
 
-# IDE files
-.vscode/
-.idea/
+.section p {
+  max-width: 800px;
+  margin: 0 auto 20px;
+  font-size: 1.1rem;
+}
 
-# Coverage directory used by tools like istanbul
-coverage/
+.section a {
+  color: #0070f3;
+  text-decoration: none;
+}
 
-# Build artifacts
-dist/
-build/
-tmp/
-temp/
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
 
-# Misc
-*.swp
-*.swo
+.statItem {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  width: 180px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
-# Optional npm cache directory
-.npm/
+.statItem h3 {
+  font-size: 2.4rem;
+  color: #0070f3;
+  margin-bottom: 5px;
+}
 
-# Local environment files
-.local/
+.statItem p {
+  font-weight: bold;
+}
 
-# TypeScript cache
-*.tsbuildinfo
+.list {
+  list-style-type: none;
+  padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.list li {
+  padding: 8px 0;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #ddd;
+}

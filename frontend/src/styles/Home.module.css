@@ -1,13 +1,28 @@
 .hero {
-    background-image: url('/images/hero-image.jpg');
+    background-image: url('/disenos/fondoInicio.jpg');
     background-size: cover;
     background-position: center;
-    height: 90vh;
+    height: 85vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     padding: 0 20px;
+    position: relative;
+  }
+  
+  .hero::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* oscurece un poco la imagen */
+  }
+  
+  .hero > div {
+    position: relative;
+    z-index: 1;
   }
   
   .hero h1 {
@@ -18,9 +33,11 @@
   
   .hero p {
     color: #eee;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     max-width: 800px;
   }
+  
+  /* resto igual */
   
   .section {
     padding: 60px 20px;
@@ -29,13 +46,19 @@
   }
   
   .section h2 {
-    font-size: 2rem;
-    margin-bottom: 15px;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
   }
   
   .section p {
     max-width: 800px;
-    margin: 0 auto 30px;
+    margin: 0 auto 20px;
+    font-size: 1.1rem;
+  }
+  
+  .section a {
+    color: #0070f3;
+    text-decoration: none;
   }
   
   .stats {
@@ -46,19 +69,33 @@
   }
   
   .statItem {
-    background-color: #f0f0f0;
+    background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
     width: 180px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
   
   .statItem h3 {
-    font-size: 2rem;
+    font-size: 2.4rem;
     color: #0070f3;
+    margin-bottom: 5px;
   }
   
   .statItem p {
-    margin-top: 5px;
     font-weight: bold;
+  }
+  
+  .list {
+    list-style-type: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .list li {
+    padding: 8px 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #ddd;
   }
   

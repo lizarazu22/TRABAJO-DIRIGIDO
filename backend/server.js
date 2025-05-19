@@ -20,10 +20,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Rutas API
-app.use('/api/productos', require('./routes/products')); // Catálogo desde almacen_temp (puede quedar como respaldo)
-app.use('/api/admin/productos', require('./routes/catalogo')); // Admin productos formal desde mongoose Product
-app.use('/api/procesar', require('./routes/procesarAlmacenTemp')); // Migración formal de almacenTemp a Product
+// 📌 Rutas API
+app.use('/api/productos', require('./routes/products')); // respaldo catálogo desde almacen_temp
+app.use('/api/admin/productos', require('./routes/catalogo')); // admin de productos formal
+app.use('/api/procesar', require('./routes/procesarAlmacenTemp')); // migración formal almacenTemp a Product
+app.use('/api/procesar/migrar', require('./routes/productRoutes')); // 📌 nueva migración directa
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/gpt', require('./routes/gpt'));
 app.use('/api/upload', require('./routes/upload'));
@@ -31,6 +32,7 @@ app.use('/api/almacen_temp', require('./routes/almacen_temp'));
 app.use('/api/carrito', require('./routes/carrito'));
 app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/ventas', require('./routes/ventas'));
+app.use('/api/gastos', require('./routes/gastos')); // ✅ la línea que te faltaba
 app.use('/api/reset-password', require('./routes/resetPassword'));
 
 app.get('/', (req, res) => res.send('API funcionando correctamente'));

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import AdminNavbar from '../../components/AdminNavbar';
 import withAuth from '../../middlewares/withAuth';
+import styles from '../../styles/AdminUsuarios.module.css';
 
 const Usuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -13,17 +14,30 @@ const Usuarios = () => {
   }, []);
 
   return (
-    <div style={{ padding: '20px' }}>
-      <AdminNavbar /> {/* Navbar admin arriba */}
-      <h1>Usuarios Registrados</h1>
+    <div className={styles.adminUsuariosContainer}>
+      <AdminNavbar />
+      <h1>📋 Usuarios Registrados</h1>
       {usuarios.length > 0 ? (
-        <ul>
-          {usuarios.map(user => (
-            <li key={user._id}>
-              {user.nombre} - {user.email} - {user.rol}
-            </li>
-          ))}
-        </ul>
+        <table className={styles.userTable}>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Registrado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {usuarios.map(user => (
+              <tr key={user._id}>
+                <td>{user.nombre}</td>
+                <td>{user.email}</td>
+                <td>{user.rol}</td>
+                <td>{new Date(user.creadoEn).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       ) : (
         <p>No hay usuarios registrados.</p>
       )}
