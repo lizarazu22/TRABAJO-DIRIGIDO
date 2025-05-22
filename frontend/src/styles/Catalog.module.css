@@ -1,79 +1,134 @@
 .catalogContainer {
-    padding: 20px;
-  }
-  
-  .heading {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .productGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-  }
-  
-  .productCard {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 16px;
-    text-align: center;
-    position: relative;
-    background-color: #fff;
-    transition: transform 0.2s ease;
-  }
-  
-  .productCard:hover {
-    transform: scale(1.05);
-  }
-  
-  .discountBadge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: #ff5722;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 12px;
-  }
-  
-  .productImage {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-  }
-  
-  .priceContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin: 10px 0;
-  }
-  
-  .oldPrice {
-    text-decoration: line-through;
-    color: #888;
-  }
-  
-  .price {
-    color: #0070f3;
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .addToCartButton {
-    background-color: #0070f3;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .addToCartButton:hover {
-    background-color: #005bb5;
-  }
-  
+  padding: 50px 20px;
+  background-color: #f4f6f8;
+  position: relative;
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 36px;
+  font-weight: 700;
+  color: #222;
+}
+
+.productGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 35px;
+  padding: 10px;
+}
+
+/* Card efecto flip */
+.productCard {
+  perspective: 1200px;
+  cursor: pointer;
+  margin: 8px;
+}
+
+.cardInner {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.productCard.flipped .cardInner {
+  transform: rotateY(180deg);
+}
+
+.cardFront,
+.cardBack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border: 3px solid #ccc;
+  border-radius: 14px;
+  padding: 22px;
+  text-align: center;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.productCard:hover .cardFront {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+}
+
+.cardFront {
+  z-index: 2;
+}
+
+.cardBack {
+  transform: rotateY(180deg);
+  background: #f9f9f9;
+}
+
+.cardFront h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.cardFront p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.cardFront label {
+  font-size: 14.5px;
+  margin-right: 6px;
+}
+
+.cardFront input {
+  width: 60px;
+  padding: 7px;
+  margin-top: 8px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+}
+
+.cardBack h3 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  color: #333;
+}
+
+.cardBack p {
+  padding: 0 14px;
+  color: #444;
+  font-size: 15.5px;
+  line-height: 1.5;
+}
+
+.cardBack small {
+  display: block;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #777;
+}
+
+.addToCartButton {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.addToCartButton:hover {
+  background-color: #005bb5;
+  transform: translateY(-2px);
+}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import styles from '../styles/MisCompras.module.css';
 
 const MisCompras = () => {
   const [compras, setCompras] = useState([]);
@@ -18,29 +19,32 @@ const MisCompras = () => {
   }, []);
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Mis Compras</h1>
+    <div className={styles.container}>
+      <h1 className={styles.heading}>🛍️ Mis Compras</h1>
 
       {compras.length === 0 ? (
-        <p>No realizaste compras todavía.</p>
+        <p className={styles.emptyMessage}>No realizaste compras todavía.</p>
       ) : (
         compras.map((venta, idx) => (
-          <div key={idx} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
-            <h3>Compra realizada el {new Date(venta.fecha).toLocaleString()}</h3>
-            <ul>
+          <div key={idx} className={styles.compraCard}>
+            <h3>Compra realizada el <strong>{new Date(venta.fecha).toLocaleString()}</strong></h3>
+            <ul className={styles.productList}>
               {venta.productos.map((p, i) => (
                 <li key={i}>
-                  {p.nombre} - {p.cantidad} unidades - {p.precio} Bs c/u
+                  {p.nombre} — {p.cantidad} u. — {p.precio.toFixed(2)} Bs c/u
                 </li>
               ))}
             </ul>
-            <strong>Total: {venta.total} Bs</strong>
+            <div className={styles.total}>
+              Total: <strong>{venta.total.toFixed(2)} Bs</strong>
+            </div>
           </div>
         ))
       )}
 
-      <div style={{ marginTop: '20px', textAlign: 'center' }}>
-        <button onClick={() => router.push('/cart')}>Volver al carrito</button>
+      <div className={styles.actionButtons}>
+        <button onClick={() => router.push('/cart')}>Volver al Carrito</button>
+        <button onClick={() => router.push('/catalog')}>Ir al Catálogo</button>
       </div>
     </div>
   );

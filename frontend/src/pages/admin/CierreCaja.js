@@ -12,6 +12,8 @@ import {
   PointElement,
   ArcElement,
 } from 'chart.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoneyBill, faCashRegister, faChartPie } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../styles/cierreCaja.module.css';
 
 Chart.register(
@@ -129,7 +131,6 @@ const CierreCaja = () => {
         ],
       });
 
-      // 👈 nuevo fetch al endpoint top-compradores
       const rankingRes = await fetch('http://localhost:5000/api/ventas/top-compradores');
       const rankingData = await rankingRes.json();
       setTopComprador(rankingData);
@@ -144,6 +145,26 @@ const CierreCaja = () => {
       <AdminNavbar />
       <h2 className={styles.heading}>💰 Cierre de Caja</h2>
 
+      {cierre && (
+        <div className={styles.cardResumenGroup}>
+          <div className={styles.cardResumen}>
+            <FontAwesomeIcon icon={faCashRegister} size="2x" />
+            <h4>Total Ventas</h4>
+            <p>{cierre.totalVentas.toFixed(2)} Bs</p>
+          </div>
+          <div className={styles.cardResumen}>
+            <FontAwesomeIcon icon={faMoneyBill} size="2x" />
+            <h4>Total Gastos</h4>
+            <p>{cierre.totalGastos.toFixed(2)} Bs</p>
+          </div>
+          <div className={styles.cardResumen}>
+            <FontAwesomeIcon icon={faChartPie} size="2x" />
+            <h4>Utilidad Neta</h4>
+            <p>{cierre.utilidadNeta.toFixed(2)} Bs</p>
+          </div>
+        </div>
+      )}
+
       <div className={styles.filterGroup}>
         <label>Desde:</label>
         <input type="date" value={desde} onChange={(e) => setDesde(e.target.value)} />
@@ -154,12 +175,6 @@ const CierreCaja = () => {
 
       {cierre && (
         <div className={styles.results}>
-          <div className={styles.totalBox}>
-            <h3>Total Ventas: {cierre.totalVentas.toFixed(2)} Bs</h3>
-            <h3>Total Gastos: {cierre.totalGastos.toFixed(2)} Bs</h3>
-            <h2 style={{ color: 'green' }}>Utilidad Neta: {cierre.utilidadNeta.toFixed(2)} Bs</h2>
-          </div>
-
           <h3>📌 Ranking Top Compradores:</h3>
           {topComprador && topComprador.length > 0 ? (
             <ul>
@@ -190,7 +205,9 @@ const CierreCaja = () => {
           {productosMasVendidosData && (
             <div className={styles.graphContainer}>
               <h3>🥧 Productos Más Vendidos</h3>
-              <Pie data={productosMasVendidosData} />
+              <div style={{ maxWidth: '400px', margin: '0 auto' }}>
+                <Pie data={productosMasVendidosData} />
+              </div>
             </div>
           )}
         </div>

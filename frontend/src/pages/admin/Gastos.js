@@ -72,7 +72,10 @@ const GastosAdmin = () => {
           type="number"
           placeholder="Monto"
           value={nuevoGasto.monto}
+          min="0"
+          step="1"
           onChange={(e) => setNuevoGasto({ ...nuevoGasto, monto: e.target.value })}
+          onKeyDown={(e) => ['-','.','e'].includes(e.key) && e.preventDefault()}
         />
         <input
           type="date"

@@ -38,15 +38,17 @@ const Navbar = () => {
     router.push('/login');
   };
 
+  const isActive = (path) => router.pathname === path ? styles.activeLink : '';
+
   if (router.pathname === '/login' || router.pathname === '/signup') return null;
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.logo}>Textiles Copacabana</div>
       <ul className={styles.navLinks}>
-        <li><Link href="/">Inicio</Link></li>
-        <li><Link href="/catalog">Catálogo</Link></li>
-        <li><Link href="/cart">Carrito {cartCount > 0 && `(${cartCount})`}</Link></li>
+        <li><Link href="/" className={isActive('/')}>Inicio</Link></li>
+        <li><Link href="/catalog" className={isActive('/catalog')}>Catálogo</Link></li>
+        <li><Link href="/cart" className={isActive('/cart')}>Carrito {cartCount > 0 && `(${cartCount})`}</Link></li>
       </ul>
       {isLoggedIn && (
         <div className={styles.logoutContainer}>

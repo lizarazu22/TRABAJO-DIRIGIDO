@@ -20,12 +20,13 @@ function MyApp({ Component, pageProps }) {
   }, [router.pathname]);
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       {!isAdmin && <Navbar />}
-      <Component {...pageProps} />
-      {/* Mostrar Footer solo si no estamos en la página de Login */}
+      <div style={{ flex: '1' }}>
+        <Component {...pageProps} />
+      </div>
       {router.pathname !== '/login' && <Footer />}
-    </>
+    </div>
   );
 }
 

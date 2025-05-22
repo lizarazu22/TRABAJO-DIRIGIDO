@@ -17,7 +17,7 @@
     top: 0; left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* oscurece un poco la imagen */
+    background: rgba(0, 0, 0, 0.55);
   }
   
   .hero > div {
@@ -27,65 +27,80 @@
   
   .hero h1 {
     color: #fff;
-    font-size: 3rem;
-    margin-bottom: 10px;
+    font-size: 4rem;
+    margin-bottom: 15px;
+    font-weight: 700;
   }
   
   .hero p {
     color: #eee;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     max-width: 800px;
+    margin: 0 auto;
   }
   
-  /* resto igual */
-  
+  /* SECCIONES */
   .section {
-    padding: 60px 20px;
+    padding: 70px 20px;
     text-align: center;
-    background-color: #fff;
+    background-color: #fefefe;
+    border-bottom: 1px solid #eee;
   }
   
   .section h2 {
-    font-size: 2.2rem;
-    margin-bottom: 20px;
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    color: #222;
   }
   
   .section p {
-    max-width: 800px;
-    margin: 0 auto 20px;
-    font-size: 1.1rem;
+    max-width: 850px;
+    margin: 0 auto 25px;
+    font-size: 1.15rem;
+    color: #444;
+    line-height: 1.7;
   }
   
   .section a {
     color: #0070f3;
     text-decoration: none;
+    font-weight: 600;
   }
   
+  /* STATS */
   .stats {
     display: flex;
     justify-content: center;
     gap: 30px;
     flex-wrap: wrap;
+    margin-top: 30px;
   }
   
   .statItem {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    width: 180px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #fff;
+    padding: 25px 20px;
+    border-radius: 12px;
+    width: 200px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+  }
+  
+  .statItem:hover {
+    transform: translateY(-5px);
   }
   
   .statItem h3 {
-    font-size: 2.4rem;
+    font-size: 2.8rem;
     color: #0070f3;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   
   .statItem p {
-    font-weight: bold;
+    font-weight: 600;
+    color: #333;
   }
   
+  /* LISTAS */
   .list {
     list-style-type: none;
     padding: 0;
@@ -94,8 +109,9 @@
   }
   
   .list li {
-    padding: 8px 0;
-    font-size: 1.1rem;
+    padding: 10px 0;
+    font-size: 1.2rem;
     border-bottom: 1px solid #ddd;
+    color: #444;
   }
   

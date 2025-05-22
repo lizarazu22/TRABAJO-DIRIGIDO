@@ -2,14 +2,14 @@
   padding: 20px;
 }
 
-.heading {
+.cartTitle {
   text-align: center;
   margin-bottom: 20px;
 }
 
 .cartGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
 }
 
@@ -19,19 +19,26 @@
   padding: 16px;
   text-align: center;
   background-color: #fff;
+  transition: transform 0.2s ease;
 }
 
-.itemDetails {
-  margin-bottom: 10px;
+.cartItem:hover {
+  transform: translateY(-2px);
+}
+
+.itemTitle {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
 }
 
 .removeButton {
   background-color: #f44336;
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 10px;
   transition: background-color 0.3s ease;
 }
 
@@ -43,13 +50,38 @@
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+  padding: 12px 20px;
+  border-radius: 6px;
   font-size: 1rem;
-  transition: background-color 0.3s ease;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .completePurchaseButton:hover {
   background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+.actionButtons button {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.actionButtons button:hover {
+  background-color: #005bb5;
+  transform: translateY(-1px);
 }

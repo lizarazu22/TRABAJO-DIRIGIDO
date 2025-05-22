@@ -35,8 +35,10 @@
   transition: color 0.3s ease;
 }
 
-.navLinks li a:hover {
+.navLinks li a:hover,
+.navLinks li a.activeLink {
   color: #0A66C2;
+  font-weight: 600;
 }
 
 .logoutContainer {

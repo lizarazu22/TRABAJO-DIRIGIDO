@@ -91,14 +91,20 @@ const Productos = () => {
           type="number"
           placeholder="Precio"
           value={formulario.precio}
+          min="0"
+          step="1"
           onChange={manejarCambio}
+          onKeyDown={(e) => ['-','.','e'].includes(e.key) && e.preventDefault()}
         />
         <input
           name="stock"
           type="number"
           placeholder="Stock"
           value={formulario.stock}
+          min="0"
+          step="1"
           onChange={manejarCambio}
+          onKeyDown={(e) => ['-','.','e'].includes(e.key) && e.preventDefault()}
         />
         <button style={{ marginLeft: '10px' }} onClick={crearProducto}>
           Crear Producto
@@ -127,13 +133,19 @@ const Productos = () => {
                   name="precio"
                   type="number"
                   value={formulario.precio}
+                  min="0"
+                  step="1"
                   onChange={manejarCambio}
+                  onKeyDown={(e) => ['-','.','e'].includes(e.key) && e.preventDefault()}
                 />
                 <input
                   name="stock"
                   type="number"
                   value={formulario.stock}
+                  min="0"
+                  step="1"
                   onChange={manejarCambio}
+                  onKeyDown={(e) => ['-','.','e'].includes(e.key) && e.preventDefault()}
                 />
                 <div style={{ marginTop: '10px' }}>
                   <button onClick={guardarCambios}>Guardar</button>

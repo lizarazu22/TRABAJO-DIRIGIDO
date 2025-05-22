@@ -1,17 +1,61 @@
 .container {
     padding: 30px;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   }
   
   .heading {
-    font-size: 30px;
+    font-size: 32px;
     margin-bottom: 25px;
     color: #333;
     text-align: center;
+  }
+  
+  .cardResumenGroup {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    animation: fadeIn 0.8s ease;
+  }
+  
+  .cardResumen {
+    flex: 1;
+    min-width: 180px;
+    background: #f0f8ff;
+    padding: 18px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+  }
+  
+  .cardResumen:hover {
+    transform: translateY(-4px);
+  }
+  
+  .cardResumen h4 {
+    margin: 10px 0 6px;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .cardResumen p {
+    font-size: 22px;
+    font-weight: bold;
+    color: #0070f3;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   .filterGroup {
@@ -67,18 +111,6 @@
   
   .results li:nth-child(even) {
     background: #f9f9f9;
-  }
-  
-  .totalBox {
-    background: #f7f7f7;
-    padding: 15px;
-    margin-top: 20px;
-    border-radius: 6px;
-    text-align: center;
-  }
-  
-  .totalBox h2 {
-    margin: 10px 0;
   }
   
   .graphContainer {

@@ -3,10 +3,18 @@ import { useRouter } from 'next/router';
 import styles from '../styles/Catalog.module.css';
 import { agregarAlCarrito } from '../utils/carritoApi';
 import { fetchProducts } from '../utils/api';
+import SidebarFilters from '../components/SidebarFilters';
 
 const Catalog = () => {
   const [productos, setProductos] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
+  const [flipped, setFlipped] = useState({});
+  const [filters, setFilters] = useState({
+    category: '',
+    price: '',
+    inStock: false,
+  });
   const [user, setUser] = useState(null);
   const router = useRouter();
 
@@ -20,6 +28,10 @@ const Catalog = () => {
     obtenerProductos();
   }, []);
 
+  useEffect(() => {
+    aplicarFiltros();
+  }, [productos, filters]);
+
   const obtenerProductos = async () => {
     try {
       const data = await fetchProducts();
@@ -27,6 +39,21 @@ const Catalog = () => {
     } catch (err) {
       console.error('Error al obtener catálogo:', err);
     }
+  };
+
+  const aplicarFiltros = () => {
+    let filtrados = [...productos];
+
+    if (filters.category)
+      filtrados = filtrados.filter((p) => p.categoria === filters.category);
+
+    if (filters.price)
+      filtrados = filtrados.filter((p) => p.precio <= Number(filters.price));
+
+    if (filters.inStock)
+      filtrados = filtrados.filter((p) => p.stock > 0);
+
+    setFilteredProducts(filtrados);
   };
 
   const handleQuantityChange = (productoId, value) => {
@@ -61,34 +88,58 @@ const Catalog = () => {
     }
   };
 
+  const toggleFlip = (id) => {
+    setFlipped({ ...flipped, [id]: !flipped[id] });
+  };
+
   return (
     <div className={styles.catalogContainer}>
+      <SidebarFilters filters={filters} setFilters={setFilters} />
       <h1 className={styles.heading}>Catálogo de Productos</h1>
       <div className={styles.productGrid}>
-        {productos
-          .filter(product => user?.rol === 'admin' || product.stock > 0)
+        {filteredProducts
+          .filter((product) => user?.rol === 'admin' || product.stock > 0)
           .map((product) => (
-            <div key={product._id} className={styles.productCard}>
-              <h2>{product.nombre}</h2>
-              <p>Precio: {product.precio.toFixed(2)} Bs</p>
-              <p>Stock: {product.stock}</p>
-              <div>
-                <label>Cantidad:</label>
-                <input
-                  type="number"
-                  min="1"
-                  value={quantities[product._id] || ''}
-                  onChange={(e) => handleQuantityChange(product._id, e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === '-' || e.key === '.' || e.key === 'e') e.preventDefault();
-                  }}
-                />
+            <div
+              key={product._id}
+              className={`${styles.productCard} ${flipped[product._id] ? styles.flipped : ''}`}
+              onClick={() => toggleFlip(product._id)}
+            >
+              <div className={styles.cardInner}>
+                <div className={styles.cardFront}>
+                  <h2>{product.nombre}</h2>
+                  <p>Precio: {product.precio.toFixed(2)} Bs</p>
+                  <p>Stock: {product.stock}</p>
+                  <div>
+                    <label>Cantidad:</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={quantities[product._id] || ''}
+                      onChange={(e) => handleQuantityChange(product._id, e.target.value)}
+                      onClick={(e) => e.stopPropagation()}
+                      onKeyDown={(e) => {
+                        if (e.key === '-' || e.key === '.' || e.key === 'e') e.preventDefault();
+                      }}
+                    />
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart(product);
+                    }}
+                  >
+                    Agregar al carrito
+                  </button>
+                </div>
+                <div className={styles.cardBack}>
+                  <h3>Descripción</h3>
+                  <p>{product.descripcion || 'Sin descripción disponible.'}</p>
+                  <small>(Click para volver)</small>
+                </div>
               </div>
-              <button onClick={() => addToCart(product)}>
-                Agregar al carrito
-              </button>
             </div>
-        ))}
+          ))}
       </div>
     </div>
   );

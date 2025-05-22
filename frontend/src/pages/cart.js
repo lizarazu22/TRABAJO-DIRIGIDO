@@ -19,7 +19,7 @@ const Cart = () => {
     setCarrito(data);
   };
 
-  const eliminarProducto = async (productoId, nombre) => {
+  const eliminarProducto = async (productoId) => {
     const usuario = JSON.parse(localStorage.getItem('user'));
     await fetch(`http://localhost:5000/api/carrito/${usuario._id}/producto/${productoId}`, { method: 'DELETE' });
     cargarCarrito(usuario._id);
@@ -46,7 +46,7 @@ const Cart = () => {
 
   return (
     <div className={styles.cartContainer}>
-      <h1>Tu Carrito</h1>
+      <h1 className={styles.heading}>🛒 Tu Carrito</h1>
       {carrito?.productos?.length > 0 ? (
         <>
           <div className={styles.cartGrid}>
@@ -74,26 +74,27 @@ const Cart = () => {
                     style={{ width: '60px' }}
                   />
                 </div>
-                <button className={styles.removeButton} onClick={() => eliminarProducto(item.productoId, item.nombre)}>
+                <button className={styles.removeButton} onClick={() => eliminarProducto(item.productoId)}>
                   Eliminar
                 </button>
               </div>
             ))}
           </div>
+
           <h2 style={{ textAlign: 'center', marginTop: '20px' }}>Total: {calcularTotal().toFixed(2)} Bs</h2>
-          <div style={{ marginTop: '20px', textAlign: 'center' }}>
+
+          <div className={styles.actionButtons}>
             <button onClick={() => router.push('/metodo-pago')} className={styles.completePurchaseButton}>
-              Comprar
+              Finalizar Compra
             </button>
-            <button onClick={vaciarTodoElCarrito} style={{ marginLeft: '10px' }}>Vaciar Carrito</button>
+            <button onClick={vaciarTodoElCarrito}>Vaciar Carrito</button>
+            <button onClick={() => router.push('/mis-compras')}>Ver Mis Compras</button>
+            <button onClick={() => router.push('/catalog')}>Volver al Catálogo</button>
           </div>
         </>
       ) : (
-        <p>No tienes productos en el carrito.</p>
+        <p style={{ textAlign: 'center' }}>No tienes productos en el carrito.</p>
       )}
-      <div style={{ marginTop: '20px', textAlign: 'center' }}>
-        <Link href="/catalog"><button>Volver al Catálogo</button></Link>
-      </div>
     </div>
   );
 };
