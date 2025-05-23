@@ -5,6 +5,7 @@ import styles from '../styles/PaymentOptions.module.css';
 
 const MetodoPago = () => {
   const [carrito, setCarrito] = useState(null);
+  const [comprobante, setComprobante] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -32,16 +33,24 @@ const MetodoPago = () => {
       return;
     }
 
+    if (!comprobante) {
+      alert('Debes subir una imagen de comprobante antes de completar la compra.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('usuarioId', usuario._id);
+    formData.append('productos', JSON.stringify(carrito.productos));
+    formData.append('comprobante', comprobante);
+
     try {
-      const res = await fetch('http://localhost:5000/api/ventas', { // ✅ RUTA CORRECTA
+      const res = await fetch('http://localhost:5000/api/ventas', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          usuarioId: usuario._id,
-          productos: carrito.productos
-        })
+        body: formData
       });
+
       const data = await res.json();
+
       if (res.ok) {
         alert('Compra completada correctamente.');
         await vaciarCarrito(usuario._id);
@@ -63,21 +72,22 @@ const MetodoPago = () => {
       <div className={styles.paymentMethods}>
         <div className={styles.paymentOption}>
           <h2>Pago con QR</h2>
-          <p>Escanea este código QR con tu aplicación de pagos:</p>
-          <img src="/images/qr-code.png" alt="Código QR de pago" />
+          <img src="/images/qr-code.png" alt="Código QR" />
         </div>
 
         <div className={styles.paymentOption}>
           <h2>Depósito Bancario</h2>
-          <p>
-            Realiza un depósito a la siguiente cuenta bancaria:
-          </p>
           <ul>
             <li>Banco: Banco Ejemplo</li>
             <li>Cuenta: 1234567890</li>
             <li>Nombre: Ignacio Lizarazu</li>
           </ul>
         </div>
+      </div>
+
+      <div className={styles.comprobanteSection}>
+        <h3>Sube tu comprobante de pago:</h3>
+        <input type="file" accept="image/*" onChange={(e) => setComprobante(e.target.files[0])} />
       </div>
 
       <div style={{ marginTop: '30px', textAlign: 'center' }}>

@@ -42,6 +42,26 @@ const Ventas = () => {
       .catch(err => console.error('Error filtrando ventas:', err));
   };
 
+  const cambiarEstado = async (id, nuevoEstado) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/ventas/${id}/estado`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado: nuevoEstado })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        cargarVentas();
+        alert(data.message);
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Error cambiando estado:', error);
+      alert('Error actualizando estado.');
+    }
+  };
+
   return (
     <div className={styles.adminVentasContainer}>
       <AdminNavbar />
@@ -74,6 +94,9 @@ const Ventas = () => {
             <th>Fecha</th>
             <th>Total (Bs)</th>
             <th>Productos</th>
+            <th>Comprobante</th>
+            <th>Estado</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -89,11 +112,50 @@ const Ventas = () => {
                     ))}
                   </ul>
                 </td>
+                <td>
+                  {venta.comprobante ? (
+                    <a href={venta.comprobante} target="_blank" rel="noopener noreferrer">Ver Comprobante</a>
+                  ) : 'No adjunto'}
+                </td>
+                <td>
+                  <strong style={{ color: venta.estado === 'confirmado' ? 'green' : venta.estado === 'rechazado' ? 'red' : 'orange' }}>
+                    {venta.estado}
+                  </strong>
+                </td>
+                <td>
+                  {venta.estado === 'standby' ? (
+                    <>
+                      <button
+                        className={styles.acceptButton}
+                        onClick={() => {
+                          if (confirm('¿Seguro que quieres aceptar este pedido?')) {
+                            cambiarEstado(venta._id, 'confirmado');
+                          }
+                        }}
+                      >
+                        Aceptar
+                      </button>
+                      <button
+                        className={styles.rejectButton}
+                        style={{ marginLeft: '8px' }}
+                        onClick={() => {
+                          if (confirm('¿Seguro que quieres rechazar este pedido?')) {
+                            cambiarEstado(venta._id, 'rechazado');
+                          }
+                        }}
+                      >
+                        Rechazar
+                      </button>
+                    </>
+                  ) : (
+                    <em>Sin acciones</em>
+                  )}
+                </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="3">No hay ventas para mostrar.</td>
+              <td colSpan="6">No hay ventas para mostrar.</td>
             </tr>
           )}
         </tbody>

@@ -93,7 +93,13 @@ const Cart = () => {
           </div>
         </>
       ) : (
-        <p style={{ textAlign: 'center' }}>No tienes productos en el carrito.</p>
+        <>
+          <p style={{ textAlign: 'center' }}>No tienes productos en el carrito.</p>
+          <div className={styles.actionButtons}>
+            <button onClick={() => router.push('/mis-compras')}>Ver Mis Compras</button>
+            <button onClick={() => router.push('/catalog')}>Volver al Catálogo</button>
+          </div>
+        </>
       )}
     </div>
   );

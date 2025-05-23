@@ -3,7 +3,7 @@ const Producto = require('../models/product');
 const Carrito = require('../models/carrito');
 const Usuario = require('../models/user');
 
-// Crear venta
+// Crear venta con comprobante obligatorio
 exports.crearVenta = async (req, res) => {
   try {
     const { usuarioId, productos, fecha } = req.body;
@@ -11,8 +11,14 @@ exports.crearVenta = async (req, res) => {
       return res.status(400).json({ message: 'Faltan datos para registrar la venta.' });
     }
 
+    if (!req.file) {
+      return res.status(400).json({ message: 'Debes adjuntar una imagen del comprobante de pago.' });
+    }
+
+    const productosArray = typeof productos === 'string' ? JSON.parse(productos) : productos;
+
     let totalVenta = 0;
-    for (const item of productos) {
+    for (const item of productosArray) {
       const productoDb = await Producto.findById(item.productoId);
       if (!productoDb) return res.status(404).json({ message: `Producto no encontrado: ${item.nombre}` });
       if (productoDb.stock < item.cantidad) {
@@ -23,15 +29,19 @@ exports.crearVenta = async (req, res) => {
       totalVenta += item.precio * item.cantidad;
     }
 
+    const comprobante = req.file ? req.file.path : null;
+
     const venta = new Venta({
       usuarioId,
-      productos: productos.map(p => ({ nombre: p.nombre, precio: p.precio, cantidad: p.cantidad })),
+      productos: productosArray.map(p => ({ nombre: p.nombre, precio: p.precio, cantidad: p.cantidad })),
       total: totalVenta,
+      comprobante,
       fecha: fecha ? new Date(fecha) : Date.now()
     });
 
     await venta.save();
     await Carrito.findOneAndDelete({ usuarioId });
+
     res.status(201).json({ message: 'Venta registrada correctamente.', venta });
   } catch (error) {
     console.error('Error registrando venta:', error);
@@ -94,7 +104,6 @@ exports.obtenerCierreCaja = async (req, res) => {
     const totalVentas = ventas.reduce((sum, v) => sum + (v.total || 0), 0);
     res.json({ ventas, totalVentas });
   } catch (error) {
-    console.error('Error obteniendo cierre de caja:', error);
     res.status(500).json({ message: 'Error al obtener cierre de caja', error });
   }
 };
@@ -125,8 +134,7 @@ exports.resumenMensual = async (req, res) => {
       ventasMes
     });
   } catch (err) {
-    console.error('Error obteniendo resumen mensual:', err);
-    res.status(500).json({ message: 'Error obteniendo resumen mensual' });
+    res.status(500).json({ message: 'Error obteniendo resumen mensual', error: err });
   }
 };
 
@@ -141,53 +149,60 @@ exports.recalcularTotales = async (req, res) => {
     }
     res.json({ message: 'Totales actualizados correctamente.' });
   } catch (error) {
-    console.error('Error recalculando totales:', error);
     res.status(500).json({ message: 'Error al recalcular totales', error });
   }
 };
 
-// Top comprador único (anterior)
+// Cambiar estado y reponer stock si es rechazado
+exports.cambiarEstadoVenta = async (req, res) => {
+  try {
+    const { estado } = req.body;
+    const venta = await Venta.findById(req.params.id);
+    if (!venta) return res.status(404).json({ message: 'Venta no encontrada' });
+
+    // Si se rechaza y estaba en standby, reponer stock
+    if (estado === 'rechazado' && venta.estado === 'standby') {
+      for (let item of venta.productos) {
+        const productoDb = await Producto.findOne({ nombre: item.nombre });
+        if (productoDb) {
+          productoDb.stock += item.cantidad;
+          await productoDb.save();
+        }
+      }
+    }
+
+    venta.estado = estado;
+    await venta.save();
+
+    res.json({ message: 'Estado actualizado', venta });
+  } catch (error) {
+    res.status(500).json({ message: 'Error actualizando estado', error });
+  }
+};
+
+// Top comprador único
 exports.topComprador = async (req, res) => {
   try {
     const resultado = await Venta.aggregate([
-      {
-        $group: {
-          _id: "$usuarioId",
-          totalGastado: { $sum: "$total" },
-          cantidadCompras: { $sum: 1 }
-        }
-      },
+      { $group: { _id: "$usuarioId", totalGastado: { $sum: "$total" }, cantidadCompras: { $sum: 1 } } },
       { $sort: { totalGastado: -1 } },
       { $limit: 1 }
     ]);
-    if (resultado.length === 0) {
-      return res.status(404).json({ message: 'No hay ventas registradas.' });
-    }
+    if (resultado.length === 0) return res.status(404).json({ message: 'No hay ventas registradas.' });
     res.json(resultado[0]);
   } catch (error) {
-    console.error('Error obteniendo top comprador:', error);
     res.status(500).json({ message: 'Error al obtener top comprador', error });
   }
 };
 
-// 📌 Ranking Top 3 compradores con email
+// Top 3 compradores
 exports.topCompradores = async (req, res) => {
   try {
     const resultado = await Venta.aggregate([
-      {
-        $group: {
-          _id: "$usuarioId",
-          totalGastado: { $sum: "$total" },
-          cantidadCompras: { $sum: 1 }
-        }
-      },
+      { $group: { _id: "$usuarioId", totalGastado: { $sum: "$total" }, cantidadCompras: { $sum: 1 } } },
       { $sort: { totalGastado: -1 } },
       { $limit: 3 }
     ]);
-
-    if (resultado.length === 0) {
-      return res.status(404).json({ message: 'No hay ventas registradas.' });
-    }
 
     const ranking = await Promise.all(resultado.map(async (r) => {
       const usuario = await Usuario.findById(r._id);
@@ -200,7 +215,6 @@ exports.topCompradores = async (req, res) => {
 
     res.json(ranking);
   } catch (error) {
-    console.error('Error obteniendo ranking:', error);
     res.status(500).json({ message: 'Error al obtener ranking', error });
   }
 };

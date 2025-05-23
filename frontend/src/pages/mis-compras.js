@@ -38,6 +38,9 @@ const MisCompras = () => {
             <div className={styles.total}>
               Total: <strong>{venta.total.toFixed(2)} Bs</strong>
             </div>
+            <div className={`${styles.estado} ${styles[venta.estado]}`}>
+              Estado: {venta.estado.toUpperCase()}
+            </div>
           </div>
         ))
       )}

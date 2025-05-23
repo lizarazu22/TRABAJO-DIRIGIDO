@@ -1,83 +1,37 @@
-.hero {
-  background-image: url('/disenos/fondoInicio.jpg');
-  background-size: cover;
-  background-position: center;
-  height: 85vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0 20px;
-}
+# dependencias
+node_modules/
 
-.hero h1 {
-  color: #fff;
-  font-size: 3rem;
-  margin-bottom: 10px;
-}
+# producción
+.next/
+out/
 
-.hero p {
-  color: #eee;
-  font-size: 1.3rem;
-  max-width: 800px;
-}
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-.section {
-  padding: 60px 20px;
-  text-align: center;
-  background-color: #fff;
-}
+# Sistema
+.DS_Store
+Thumbs.db
 
-.section h2 {
-  font-size: 2.2rem;
-  margin-bottom: 20px;
-}
+# Vercel / deploy
+.vercel/
 
-.section p {
-  max-width: 800px;
-  margin: 0 auto 20px;
-  font-size: 1.1rem;
-}
+# Entornos locales
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-.section a {
-  color: #0070f3;
-  text-decoration: none;
-}
+# Cache y otros
+.cache/
+logs/
+*.log
+log/
+.vscode/
+uploads/
 
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.statItem {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  width: 180px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.statItem h3 {
-  font-size: 2.4rem;
-  color: #0070f3;
-  margin-bottom: 5px;
-}
-
-.statItem p {
-  font-weight: bold;
-}
-
-.list {
-  list-style-type: none;
-  padding: 0;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.list li {
-  padding: 8px 0;
-  font-size: 1.1rem;
-  border-bottom: 1px solid #ddd;
-}
+# Cloudinary config (⚠️ evita subir las credenciales)
+backend/config/cloudinary.js

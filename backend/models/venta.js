@@ -10,6 +10,8 @@ const ventaSchema = new mongoose.Schema({
     }
   ],
   total: Number,
+  comprobante: String, 
+  estado: { type: String, enum: ['standby', 'confirmado', 'rechazado'], default: 'standby' },
   fecha: { type: Date, default: Date.now }
 });
 

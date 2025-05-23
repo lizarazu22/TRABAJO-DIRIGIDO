@@ -22,6 +22,7 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
   }
   
   .filters button:hover {
@@ -56,5 +57,49 @@
   .salesTable ul {
     margin: 0;
     padding-left: 20px;
+  }
+  
+  .acceptButton {
+    padding: 6px 12px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .acceptButton:hover {
+    background-color: #218838;
+  }
+  
+  .rejectButton {
+    padding: 6px 12px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .rejectButton:hover {
+    background-color: #c82333;
+  }
+  
+  .filters select,
+  .filters input[type="date"] {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .salesTable a {
+    color: #0070f3;
+    text-decoration: underline;
+  }
+  
+  .salesTable a:hover {
+    text-decoration: none;
   }
   
