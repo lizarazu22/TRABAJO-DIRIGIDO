@@ -2,24 +2,140 @@
     padding: 20px;
   }
   
+  /* Botón para mostrar/ocultar formulario */
+  .toggleFormButton {
+    padding: 12px 20px;
+    background-color: #0070f3;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-bottom: 20px;
+  }
+  
+  .toggleFormButton:hover {
+    background-color: #005bb5;
+    transform: translateY(-1px);
+  }
+  
+  /* Formulario de agregar producto */
   .productForm {
-    margin-top: 20px;
+    margin: 30px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    align-items: center;
   }
   
-  .productForm input {
-    margin-right: 10px;
+  .productForm input,
+  .productForm select {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border 0.3s, box-shadow 0.2s;
   }
   
+  .productForm input:focus,
+  .productForm select:focus {
+    border-color: #0070f3;
+    box-shadow: 0 0 5px rgba(0, 112, 243, 0.3);
+    outline: none;
+  }
+  
+  .productForm button {
+    grid-column: span 2;
+    padding: 12px 16px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 1rem;
+  }
+  
+  .productForm button:hover {
+    background-color: #1e7e34;
+  }
+  
+  @media (max-width: 600px) {
+    .productForm {
+      grid-template-columns: 1fr;
+    }
+  
+    .productForm button {
+      grid-column: span 1;
+    }
+  }
+  
+  /* Listado de productos */
   .productList {
     margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
   }
   
+  /* Cada card de producto */
   .productItem {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.3s;
+    background-color: #fff;
+  }
+  
+  .productItem:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
+  
+  .productItem h3 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #333;
+  }
+  
+  .productItem p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #555;
   }
   
   .productItem button {
-    margin-left: 10px;
+    padding: 9px 14px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+  
+  .productItem button:first-of-type {
+    background-color: #0070f3;
+    color: white;
+  }
+  
+  .productItem button:first-of-type:hover {
+    background-color: #005bb5;
+    transform: translateY(-1px);
+  }
+  
+  .productItem button:last-of-type {
+    background-color: #ff4136;
+    color: white;
+  }
+  
+  .productItem button:last-of-type:hover {
+    background-color: #c00;
+    transform: translateY(-1px);
   }
   

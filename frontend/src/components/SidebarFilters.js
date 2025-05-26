@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import styles from '../styles/SidebarFilters.module.css';
 
-const SidebarFilters = ({ filters, setFilters }) => {
+const SidebarFilters = ({
+  filters,
+  setFilters,
+  categorias = [],
+  materiales = [],
+  colores = [],
+  densidades = []
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
@@ -25,9 +32,9 @@ const SidebarFilters = ({ filters, setFilters }) => {
           <label htmlFor="category">Categoría</label>
           <select name="category" id="category" onChange={handleChange}>
             <option value="">Todas</option>
-            <option value="hilos">Hilos</option>
-            <option value="telas">Telas</option>
-            <option value="accesorios">Accesorios</option>
+            {categorias.map((cat, i) => (
+              <option key={i} value={cat}>{cat}</option>
+            ))}
           </select>
         </div>
 
@@ -35,10 +42,9 @@ const SidebarFilters = ({ filters, setFilters }) => {
           <label htmlFor="material">Material</label>
           <select name="material" id="material" onChange={handleChange}>
             <option value="">Todos</option>
-            <option value="Alpaca">Alpaca</option>
-            <option value="Llama">Llama</option>
-            <option value="Acrílico">Acrílico</option>
-            <option value="Algodón">Algodón</option>
+            {materiales.map((mat, i) => (
+              <option key={i} value={mat}>{mat}</option>
+            ))}
           </select>
         </div>
 
@@ -46,10 +52,9 @@ const SidebarFilters = ({ filters, setFilters }) => {
           <label htmlFor="color">Color</label>
           <select name="color" id="color" onChange={handleChange}>
             <option value="">Todos</option>
-            <option value="Rojo">Rojo</option>
-            <option value="Azul">Azul</option>
-            <option value="Negro">Negro</option>
-            <option value="Natural">Natural</option>
+            {colores.map((col, i) => (
+              <option key={i} value={col}>{col}</option>
+            ))}
           </select>
         </div>
 
@@ -57,9 +62,9 @@ const SidebarFilters = ({ filters, setFilters }) => {
           <label htmlFor="densidad">Densidad</label>
           <select name="densidad" id="densidad" onChange={handleChange}>
             <option value="">Todas</option>
-            <option value="Fina">Fina</option>
-            <option value="Media">Media</option>
-            <option value="Gruesa">Gruesa</option>
+            {densidades.map((den, i) => (
+              <option key={i} value={den}>{den}</option>
+            ))}
           </select>
         </div>
 

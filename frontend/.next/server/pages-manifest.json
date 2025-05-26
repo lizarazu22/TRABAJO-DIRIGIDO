@@ -1,9 +1,7 @@
 {
-  "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
+  "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/admin/Ventas": "pages/admin/Ventas.js",
-  "/login": "pages/login.js",
-  "/": "pages/index.js",
-  "/catalog": "pages/catalog.js"
+  "/catalog": "pages/catalog.js",
+  "/": "pages/index.js"
 }

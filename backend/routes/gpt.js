@@ -1,21 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { OpenAI } = require('openai');
+const openai = require('../config/openai');
+const Producto = require('../models/product');
 
-// Inicializar OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-// Catálogo de materiales
-const catalogo = [
-  { id: 1, nombre: 'Cemento', descripcion: 'Material de construcción básico', precio: 20 },
-  { id: 2, nombre: 'Ladrillo', descripcion: 'Bloque de arcilla para construcción', precio: 15 },
-  { id: 3, nombre: 'Madera', descripcion: 'Material para estructuras y acabados', precio: 50 },
-  { id: 4, nombre: 'Pintura', descripcion: 'Pintura para paredes y superficies', precio: 25 },
-];
-
-// Endpoint para búsqueda con GPT-3
 router.post('/buscar', async (req, res) => {
   const { solicitud } = req.body;
 
@@ -24,32 +11,56 @@ router.post('/buscar', async (req, res) => {
   }
 
   try {
-    // Solicitud a OpenAI para procesar la solicitud del usuario
+    // Solo productos con stock disponible
+    const productos = await Producto.find({ stock: { $gt: 0 } }, 'nombre descripcion categoria material precio stock');
+
+    if (!productos.length) {
+      return res.status(404).json({ message: 'No hay productos en stock en el catálogo' });
+    }
+
+    const prompt = `
+Eres un asistente experto en ventas. Tienes este catálogo de productos:
+${JSON.stringify(productos)}.
+
+Cuando recibas una solicitud, responde estrictamente en JSON con este formato:
+
+{
+  "recomendados": [
+    { "nombre": "Nombre producto", "precio": 100, "categoria": "Categoría" }
+  ]
+}
+
+Incluye solo los productos más relevantes relacionados a la solicitud.
+
+Solicitud del cliente: "${solicitud}"
+`;
+
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo', // Modelo GPT-3.5 Turbo
+      model: 'gpt-3.5-turbo',
       messages: [
-        {
-          role: 'system',
-          content: `Eres un asistente que recomienda materiales del catálogo basado en solicitudes.`,
-        },
-        {
-          role: 'user',
-          content: `Catálogo de materiales: ${JSON.stringify(
-            catalogo
-          )}. Solicitud: ${solicitud}`,
-        },
+        { role: 'system', content: 'Responde solo en JSON válido.' },
+        { role: 'user', content: prompt },
       ],
     });
 
-    const materialesRecomendados = response.choices[0].message.content.trim();
+    const raw = response.choices[0].message.content.trim();
+
+    let sugerencias;
+    try {
+      sugerencias = JSON.parse(raw);
+    } catch (err) {
+      console.error('Error parseando JSON IA:', err);
+      return res.status(500).json({ message: 'Respuesta inválida desde IA', raw });
+    }
 
     res.status(200).json({
-      message: 'Materiales sugeridos',
-      sugerencias: materialesRecomendados,
+      message: 'Productos sugeridos',
+      sugerencias,
     });
+
   } catch (error) {
     console.error('Error al interactuar con OpenAI:', error.message);
-    res.status(500).json({ message: 'Error interno al procesar la solicitud' });
+    res.status(500).json({ message: 'Error al procesar la solicitud con OpenAI' });
   }
 });
 
